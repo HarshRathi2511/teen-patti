@@ -136,7 +136,7 @@ class Game:
 
         for player in self.players:
 
-            print(player.sum_of_cards)
+            # print(player.sum_of_cards)
 
             if self.check_for_trail(player.cards):
                 players_with_trail.append(player)
@@ -175,7 +175,7 @@ class Game:
 
             for player in players_with_trail:
                 if player.sum_of_cards == max_value:
-                    Game.winner = player
+                    # Game.winner = player
                     print(f'Game won by {player.name} due to trail')
                     exit()
 
@@ -193,7 +193,7 @@ class Game:
                 # to find that player who has max occurence
                 for player in players_with_pure_sequence:
                     if player.sum_of_cards == max_value:
-                        Game.winner = player
+                        # Game.winner = player
                         print(
                             f'Game won by {player.name} due to pure sequence')
                         exit()
@@ -211,16 +211,17 @@ class Game:
             if count == 1:
                 for player in players_with_sequence:
                     if player.sum_of_cards == max_value:
-                        Game.winner = player
+                        # Game.winner = player
                         print(f'Game won by {player.name} due to sequence ')
                         exit()
 
         if players_with_color:
-            # sum_list = []
+            sum_list = []
             for player in players_with_color:
-                print(f'{player.name} has a flush')  
+                print(f'{player.name} has a flush') 
+                sum_list.append(player.sum_of_cards) 
 
-            # max_value = max(sum_list)
+            max_value = max(sum_list)
 
             # count = countOccurrencesInList(sum_list, max_value)
 
@@ -231,7 +232,7 @@ class Game:
                 for player in players_with_color:
                       
                     if player.sum_of_cards == max_value:
-                        Game.winner = player
+                        # Game.winner = player
                         print(f'Game won by {player.name} due to flush')
                         exit()
 
@@ -243,7 +244,7 @@ class Game:
 
                 for player in players_with_color:
                     if player.max_card_value == max(max_card_list):
-                        Game.winner = player
+                        # Game.winner = player
                         print(f'Game won by {player.name} due to flush')
                         exit()
 
@@ -267,7 +268,7 @@ class Game:
                     card_pair_value= find_duplicates(card_value_set)
 
                     if card_pair_value[0] == max_value:
-                        Game.winner = player
+                        # Game.winner = player
                         print(
                             f'Game won by {player.name} due to pair')
                         exit()  
@@ -287,7 +288,7 @@ class Game:
                     print(third_card_values)
                     for player in players_with_pair:
                       if player.third_card_value == max(third_card_values):
-                        Game.winner = player
+                        # Game.winner = player
                         print(
                             f'Game won by {player.name} due to draw of pair cards and third card greater')
                         exit() 
@@ -303,18 +304,26 @@ class Game:
 
             print(max_high_card_list)    
             max_value = max(max_high_card_list)
-            print(max_value)
+            # print(max_value)
 
             count_of_max = countOccurrencesInList(max_high_card_list,max_value)
-            print(f'Count of max {count_of_max}')
+            # print(f'Count of max {count_of_max}')
 
-            if count_of_max==1:
-                for player in players_with_high_card:
-                    print(player.max_card_value)
+            # if count_of_max==1:
+            winner_list=[]
+            for player in players_with_high_card:
+                    # print(player.max_card_value)
                     if player.max_card_value==max_value:
-                        Game.winner = player
+                        # Game.winner = player
+                        winner_list.append(player.name)
                         print(
                             f'Game won by {player.name} due to having a bigger high card')
-                        exit() 
+
+            if len(winner_list)>1:
+                print(f'Draw between :-{winner_list}')
+                            
+                        
+            exit() 
+
 
 
