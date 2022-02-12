@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from cards_deck import Deck
 from helper import countOccurrencesInList, find_duplicates, rm_element_from_list
 from models import Player
@@ -7,10 +8,12 @@ import time
 class Game:
 
     num_of_players = 0
+    init_pool_amount= 100
 
     def __init__(self):
         self.players = []
         self.deck = Deck()
+        self.pool_amount = len(self.players)*Game.init_pool_amount
 
     @staticmethod
     def welcome():
@@ -125,8 +128,43 @@ class Game:
         if values_list[0] == values_list[2] and values_list[0] != values_list[1]:
             return True
         return False
+    
+    @classmethod
+    def set_init_pool_amount(cls):
+        try:
+            amount= input('Set initial pool in amount')
+            cls.init_pool_amount= amount
+            print(f'Initial pool in amount is {cls.init_pool_amount}')
+        except ValidationError:
+            print('Couldnt understand')
+            exit()    
 
-    def start_game(self):
+    def start_betting(self):
+        for player in self.players:
+            try:
+                print('.................')
+                print(f'{player.name}\'s turn')
+                choice = input('Press R for raise and F for fold')
+                if choice =='R' or choice =='r':
+                    amount_raised= player.raise_amount()
+                    print(amount_raised)
+                    # add the amount in the pool
+                elif choice =='F' or choice =='f':
+                    isFold= player.fold_cards()
+                    if isFold:
+                        print(self.players)
+                        self.players.remove(player)
+                        print(f'Player {player.name} folded his cards')
+                        print(self.players)
+
+            except ValidationError :
+                print('Couldnt get you')
+                exit()    
+
+
+
+
+    def show_results(self):
         players_with_trail = []
         players_with_pure_sequence = []
         players_with_sequence = []
@@ -298,7 +336,7 @@ class Game:
         if players_with_high_card:
             max_high_card_list=[]
             for player in players_with_high_card:
-                print(f'{player.name} don\'t have above patterns')
+                print(f'{player.name} has a high card')
                 card_values= [ card.value for card in player.cards]  
                 max_high_card_list.append(max(card_values))
 
@@ -317,7 +355,7 @@ class Game:
                         # Game.winner = player
                         winner_list.append(player.name)
                         print(
-                            f'Game won by {player.name} due to having a bigger high card')
+                            f'Game won by {player.name} who has a higher card')
 
             if len(winner_list)>1:
                 print(f'Draw between :-{winner_list}')

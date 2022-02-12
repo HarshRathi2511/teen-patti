@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from const import VALUES
 
 class Player:
@@ -31,8 +32,29 @@ class Player:
             value.append(card.value) 
         return max(value)  
 
-    # @property
-    # def get_repeated_card(self):
+    def raise_amount(self):
+        try:
+            print(f'Player {self.name}')
+            amount= input('Raise amount by:- ')
+            return amount
+
+        except ValidationError:
+            print('Couldn\'t understand')
+            exit() 
+
+    def fold_cards(self):
+        try:
+            print(f'Player {self.name}')
+            isFold= input('Are you sure to fold type (Y/N) ')
+            if isFold=='Y' or isFold=='y':
+                return True
+            else:
+                return False    
+
+        except ValidationError:
+            print('Couldn\'t understand')
+            exit()
+                
                     
 
 

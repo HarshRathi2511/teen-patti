@@ -11,7 +11,9 @@ game.welcome()
 game.get_num_of_players()
 game.get_names()
 game.distribute_cards()
-game.start_game()
+game.set_init_pool_amount()
+game.start_betting()
+game.show_results()
 
 # card_list = [Card('6','Hearts'),Card('5','Spades'),Card('7','Diamond')]
 # card_list = [Card('6','Hearts'),Card('6','Spades'),Card('6','Hearts')]
