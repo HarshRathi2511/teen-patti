@@ -11,7 +11,7 @@ game.welcome()
 game.get_num_of_players()
 game.get_names()
 game.distribute_cards()
-game.set_init_pool_amount()
+# game.set_init_pool_amount()
 game.start_betting()
 game.show_results()
 

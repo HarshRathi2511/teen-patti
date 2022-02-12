@@ -35,7 +35,7 @@ class Player:
     def raise_amount(self):
         try:
             print(f'Player {self.name}')
-            amount= input('Raise amount by:- ')
+            amount= input('Raise amount by:-  ')
             return amount
 
         except ValidationError:
@@ -45,7 +45,7 @@ class Player:
     def fold_cards(self):
         try:
             print(f'Player {self.name}')
-            isFold= input('Are you sure to fold type (Y/N) ')
+            isFold= input('Are you sure to fold type (Y/N):-  ')
             if isFold=='Y' or isFold=='y':
                 return True
             else:

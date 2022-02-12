@@ -8,12 +8,12 @@ import time
 class Game:
 
     num_of_players = 0
-    init_pool_amount= 100
+    pool_amount = 100
 
     def __init__(self):
         self.players = []
         self.deck = Deck()
-        self.pool_amount = len(self.players)*Game.init_pool_amount
+        # self.pool_amount = len(self.players)*Game.init_pool_amount
 
     @staticmethod
     def welcome():
@@ -56,6 +56,9 @@ class Game:
             print('Enter a valid name')
             exit()
 
+    def set_init_pool_amount(self):
+        Game.pool_amount = len(self.players)*Game.init_pool_amount
+
     def distribute_cards(self):
         print('Distributing cards......')
         time.sleep(1)
@@ -96,7 +99,7 @@ class Game:
         #                 return False
         #         return True
         # return False
-        
+
         return sorted(values_list) == list(range(min(values_list), max(values_list)+1))
 
     @staticmethod
@@ -128,41 +131,46 @@ class Game:
         if values_list[0] == values_list[2] and values_list[0] != values_list[1]:
             return True
         return False
-    
-    @classmethod
-    def set_init_pool_amount(cls):
-        try:
-            amount= input('Set initial pool in amount')
-            cls.init_pool_amount= amount
-            print(f'Initial pool in amount is {cls.init_pool_amount}')
-        except ValidationError:
-            print('Couldnt understand')
-            exit()    
+
+    # @classmethod
+    # def set_init_pool_amount(cls):
+    #     try:
+    #         amount = input('Set initial pool in amount')
+    #         cls.init_pool_amount = amount
+    #         print(f'Initial pool in amount is {cls.init_pool_amount}')
+
+    #     except ValidationError:
+    #         print('Couldnt understand')
+    #         exit()
 
     def start_betting(self):
-        for player in self.players:
-            try:
-                print('.................')
-                print(f'{player.name}\'s turn')
-                choice = input('Press R for raise and F for fold')
-                if choice =='R' or choice =='r':
-                    amount_raised= player.raise_amount()
-                    print(amount_raised)
-                    # add the amount in the pool
-                elif choice =='F' or choice =='f':
-                    isFold= player.fold_cards()
-                    if isFold:
-                        print(self.players)
-                        self.players.remove(player)
-                        print(f'Player {player.name} folded his cards')
-                        print(self.players)
+        while len(self.players) > 1:
+            for player in self.players:
+                try:
+                    print(f'POOL AMOUNT = {self.pool_amount}')
+                    print('.................')
+                    print(f'{player.name}\'s turn')
+                    choice = input('Press R for raise and F for fold:- ')
+                    if choice == 'R' or choice == 'r':
+                        amount_raised = player.raise_amount()
+                        # print(amount_raised)
+                        # add the amount in the pool
+                        Game.pool_amount += int(amount_raised)
+                        print(f'{player.name} raised amount by {amount_raised}')
+                    elif choice == 'F' or choice == 'f':
+                        isFold = player.fold_cards()
+                        if isFold:
+                            # print(self.players)
+                            self.players.remove(player)
+                            print(f'Player {player.name} folded his cards')
+                            # print(self.players)
+                    else:
+                        print('Enter a valid command')
+                        exit()
 
-            except ValidationError :
-                print('Couldnt get you')
-                exit()    
-
-
-
+                except ValidationError:
+                    print('Couldnt get you')
+                    exit()
 
     def show_results(self):
         players_with_trail = []
@@ -194,13 +202,13 @@ class Game:
             else:  # if all the above fail then push to high card
                 players_with_high_card.append(player)
 
-        print(players_with_trail)
-        print(players_with_pure_sequence)
-        print(players_with_sequence)
-        print(players_with_color)
-        print(players_with_pair)
-        
-        print(players_with_high_card)
+        # print(players_with_trail)
+        # print(players_with_pure_sequence)
+        # print(players_with_sequence)
+        # print(players_with_color)
+        # print(players_with_pair)
+
+        # print(players_with_high_card)
 
         if players_with_trail:
             sum_list = []
@@ -256,8 +264,8 @@ class Game:
         if players_with_color:
             sum_list = []
             for player in players_with_color:
-                print(f'{player.name} has a flush') 
-                sum_list.append(player.sum_of_cards) 
+                print(f'{player.name} has a flush')
+                sum_list.append(player.sum_of_cards)
 
             max_value = max(sum_list)
 
@@ -268,7 +276,7 @@ class Game:
 
             if no_of_flush == 1:
                 for player in players_with_color:
-                      
+
                     if player.sum_of_cards == max_value:
                         # Game.winner = player
                         print(f'Game won by {player.name} due to flush')
@@ -290,31 +298,29 @@ class Game:
             # no_of_players_with_pair= len
             pair_list = []  # contains the pair card value of each player
             for player in players_with_pair:
-                print(f'{player.name} has a pair')  
+                print(f'{player.name} has a pair')
                 card_values = [card.value for card in player.cards]
                 pair_element = find_duplicates(card_values)[0]
                 pair_list.append(pair_element)
-             
 
             max_value = max(pair_list)
 
             count_of_max = countOccurrencesInList(pair_list, max_value)
 
-            if count_of_max==1:
+            if count_of_max == 1:
                 for player in players_with_pair:
-                    card_value_set = [ card.value for card in player.cards]
-                    card_pair_value= find_duplicates(card_value_set)
+                    card_value_set = [card.value for card in player.cards]
+                    card_pair_value = find_duplicates(card_value_set)
 
                     if card_pair_value[0] == max_value:
                         # Game.winner = player
                         print(
                             f'Game won by {player.name} due to pair')
-                        exit()  
-
+                        exit()
 
             else:
-            # # if the pair card is of equal weights then check for the third card
-            # # this could be done by simply comparing sum of cards
+                # # if the pair card is of equal weights then check for the third card
+                # # this could be done by simply comparing sum of cards
                 third_card_values = []
                 for player in players_with_pair:
                     # delete the max value from the card deck of each to get the third element
@@ -325,43 +331,39 @@ class Game:
                     third_card_values.append(third_card)
                     print(third_card_values)
                     for player in players_with_pair:
-                      if player.third_card_value == max(third_card_values):
-                        # Game.winner = player
-                        print(
-                            f'Game won by {player.name} due to draw of pair cards and third card greater')
-                        exit() 
-
-
+                        if player.third_card_value == max(third_card_values):
+                            # Game.winner = player
+                            print(
+                                f'Game won by {player.name} due to draw of pair cards and third card greater')
+                            exit()
 
         if players_with_high_card:
-            max_high_card_list=[]
+            max_high_card_list = []
             for player in players_with_high_card:
                 print(f'{player.name} has a high card')
-                card_values= [ card.value for card in player.cards]  
+                card_values = [card.value for card in player.cards]
                 max_high_card_list.append(max(card_values))
 
-            print(max_high_card_list)    
+            print(max_high_card_list)
             max_value = max(max_high_card_list)
             # print(max_value)
 
-            count_of_max = countOccurrencesInList(max_high_card_list,max_value)
+            count_of_max = countOccurrencesInList(
+                max_high_card_list, max_value)
             # print(f'Count of max {count_of_max}')
 
             # if count_of_max==1:
-            winner_list=[]
+            winner_list = []
             for player in players_with_high_card:
-                    # print(player.max_card_value)
-                    if player.max_card_value==max_value:
-                        # Game.winner = player
-                        winner_list.append(player.name)
-                        print(
-                            f'Game won by {player.name} who has a higher card')
+                # print(player.max_card_value)
+                if player.max_card_value == max_value:
+                    # Game.winner = player
+                    winner_list.append(player.name)
+                    print(
+                        f'Game won by {player.name} who has a higher card')
 
-            if len(winner_list)>1:
+            if len(winner_list) > 1:
                 print(f'Draw between :-{winner_list}')
-                            
-                        
-            exit() 
 
-
+            exit()
 
