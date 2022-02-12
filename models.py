@@ -22,7 +22,18 @@ class Player:
         value=0
         for card in self.cards:
             value = value+ card.value
-        return value    
+        return value   
+
+    @property
+    def max_card_value(self):
+        value=[]
+        for card in self.cards:
+            value.append(card.value) 
+        return max(value)  
+
+    # @property
+    # def get_repeated_card(self):
+                    
 
 
 
