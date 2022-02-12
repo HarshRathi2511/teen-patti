@@ -16,5 +16,6 @@ class Deck:
         return 'Deck of all the cards created'
 
     def random_set_of_three(self):
-        return random.sample(self.deck,3)
+        random.shuffle(self.deck)
+        return list(random.sample(self.deck,3))
 

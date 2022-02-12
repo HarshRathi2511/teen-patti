@@ -6,7 +6,25 @@ class Player:
         self.cards= []
 
     def __str__(self):
-        return self.name +' has the cards ' + self.cards   
+        card_name=[]
+        for card in self.cards:
+            card_name.append(card.__str__())
+           
+        return self.name +' has the cards ' + str(card_name)  
+        
+    def display_cards(self):
+        print(f'{self.name} has')
+        for card in self.cards:               
+                print('{} of {}'.format(card.card_type,card.suit)) 
+    
+    @property  #now it can be accessed using player.sum_of_cards
+    def sum_of_cards(self):
+        value=0
+        for card in self.cards:
+            value = value+ card.value
+        return value    
+
+
 
 
 class Card:
@@ -17,3 +35,5 @@ class Card:
 
     def __str__(self):
         return self.card_type + ' of ' + self.suit  
+
+        
