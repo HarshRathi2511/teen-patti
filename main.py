@@ -5,7 +5,7 @@ from helper import countOccurrencesInList, find_duplicates, rm_element_from_list
 from models import Card
 from const import SUITS,CARD_TYPE
 
-
+print("Hello and welcome to Teen Patti : a traditional Indian poker game")
 game =Game()
 game.welcome()
 game.get_num_of_players()
